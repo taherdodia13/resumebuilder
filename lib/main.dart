@@ -1,5 +1,3 @@
-import 'package:resume_builder/utils/routes.dart';
-
 import 'utils/exports.dart';
 
 void main() {
@@ -20,6 +18,7 @@ class MyApp extends StatelessWidget {
           title: 'Anime Trix',
           initialRoute: AppPages.homepage,
           getPages: AppPages.routes,
+          debugShowCheckedModeBanner: false,
           // theme: appThemeData,
         );
       },

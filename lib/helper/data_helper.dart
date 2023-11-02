@@ -61,7 +61,7 @@ class DatabaseHelper {
     );
   }
 
-   Future<void> deleteResume(String id) async {
+  Future<void> deleteResume(String id) async {
     final db = await database;
     await db.delete(
       _tableResumes,

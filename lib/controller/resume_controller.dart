@@ -4,9 +4,23 @@ import '../utils/exports.dart';
 class ResumeController extends GetxController {
   DatabaseHelper dbHelper = DatabaseHelper.instance;
   RxList<Resume> resumes = <Resume>[].obs;
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController educationController = TextEditingController();
+  final TextEditingController summaryController = TextEditingController();
 
   Future<void> init() async {
     resumes.assignAll(await dbHelper.getResumes());
+    Resume? resume = Get.arguments as Resume?;
+
+    if (resume != null) {
+      fullNameController.text = resume.fullName;
+      emailController.text = resume.email;
+      phoneController.text = resume.phone;
+      educationController.text = resume.education;
+      summaryController.text = resume.summary;
+    }
   }
 
   void updateResume(Resume updatedResume) async {
@@ -37,7 +51,7 @@ class ResumeController extends GetxController {
     resumes.add(newResume);
   }
 
-   void deleteResume(String id) async {
+  void deleteResume(String id) async {
     final index = resumes.indexWhere((resume) => resume.id == id);
     if (index != -1) {
       resumes.removeAt(index);
@@ -46,8 +60,11 @@ class ResumeController extends GetxController {
   }
 
   void reorderResumes(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
+    if (oldIndex < newIndex) {
+      newIndex--;
+    }
+    if (oldIndex == newIndex) {
+      return;
     }
     final item = resumes.removeAt(oldIndex);
     resumes.insert(newIndex, item);

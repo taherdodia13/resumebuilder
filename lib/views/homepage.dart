@@ -1,5 +1,4 @@
 import '../utils/exports.dart';
-import '../utils/routes.dart';
 
 class HomePage extends StatelessWidget {
   final ResumeController resumeController = Get.find();
@@ -26,27 +25,46 @@ class HomePage extends StatelessWidget {
                   key: ValueKey(entry.value.id),
                   onTap: () {
                     Get.toNamed(
-                      AppPages.resumeCreatePage,
+                      AppPages.resumeDetailPage,
                       arguments: entry.value,
                     );
                   },
                   child: Container(
                     key: ValueKey(entry.value.id),
-                    margin: const EdgeInsets.symmetric(vertical: 4.0),
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                      bottom: 10,
+                    ),
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey, // Change color as needed
+                      color: AppColor.listTileColor,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: ListTile(
                       key: ValueKey(entry.value.id),
-                      title: Text('Name: ${entry.value.fullName}'),
-                      subtitle: Text('Education: ${entry.value.education}'),
-                      leading: const Icon(Icons.drag_handle),
+                      title: Text(
+                        entry.value.fullName,
+                        style: TextStyle(
+                            color: AppColor.educationDesc,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      subtitle: Text(
+                        'Education: ${entry.value.education}',
+                        style: TextStyle(
+                            color: AppColor.educationDesc,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500),
+                      ),
                       trailing: IconButton(
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(
+                          Icons.delete,
+                          size: 20.sp,
+                          color: AppColor.deleteButtonColor,
+                        ),
                         onPressed: () {
-                          showDeleteConfirmation(entry.value.id,
-                              context); // Handle the delete action
+                          showDeleteConfirmation(entry.value.id, context);
                         },
                       ),
                     ),
@@ -54,14 +72,7 @@ class HomePage extends StatelessWidget {
                 )
             ],
             onReorder: (oldIndex, newIndex) {
-              if (oldIndex < newIndex) {
-                newIndex--;
-              }
-              if (oldIndex == newIndex) {
-                return;
-              }
-              final item = resumeController.resumes.removeAt(oldIndex);
-              resumeController.resumes.insert(newIndex, item);
+              resumeController.reorderResumes(oldIndex, newIndex);
             },
           );
         }
@@ -90,7 +101,10 @@ class HomePage extends StatelessWidget {
               },
             ),
             TextButton(
-              child: const Text('Delete'),
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: AppColor.deleteButtonColor),
+              ),
               onPressed: () {
                 resumeController.deleteResume(id);
                 Navigator.of(context).pop();
