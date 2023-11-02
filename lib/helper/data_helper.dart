@@ -32,8 +32,11 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $_tableResumes (
         id INTEGER PRIMARY KEY,
-        title TEXT,
-        description TEXT
+        fullName TEXT,
+        email TEXT,
+        phone TEXT,
+        education TEXT,
+        summary TEXT
       )
     ''');
   }
@@ -43,8 +46,27 @@ class DatabaseHelper {
     await db.insert(
       _tableResumes,
       resume
-          .toMap(), // Assume `toMap()` method in the Resume class to convert to Map
+          .toMap(), // Assuming `toMap()` method in the Resume class to convert to Map
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> updateResume(Resume updatedResume) async {
+    final db = await database;
+    await db.update(
+      _tableResumes,
+      updatedResume.toMap(),
+      where: 'id = ?',
+      whereArgs: [updatedResume.id],
+    );
+  }
+
+   Future<void> deleteResume(String id) async {
+    final db = await database;
+    await db.delete(
+      _tableResumes,
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 
@@ -55,8 +77,11 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) {
       return Resume(
         id: maps[i]['id'].toString(), // Assuming 'id' is retrieved as a string
-        title: maps[i]['title'],
-        description: maps[i]['description'],
+        fullName: maps[i]['fullName'],
+        email: maps[i]['email'],
+        phone: maps[i]['phone'],
+        education: maps[i]['education'],
+        summary: maps[i]['summary'],
       );
     });
   }

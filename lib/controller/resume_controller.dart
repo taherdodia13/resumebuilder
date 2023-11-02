@@ -9,15 +9,40 @@ class ResumeController extends GetxController {
     resumes.assignAll(await dbHelper.getResumes());
   }
 
-  Future<void> addResume(String title, String description) async {
+  void updateResume(Resume updatedResume) async {
+    final index = resumes.indexWhere((resume) => resume.id == updatedResume.id);
+    if (index != -1) {
+      resumes[index] = updatedResume;
+      await dbHelper.updateResume(updatedResume);
+    }
+  }
+
+  Future<void> addResume({
+    required String fullName,
+    required String email,
+    required String phone,
+    required String education,
+    required String summary,
+  }) async {
     final newResume = Resume(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: title,
-      description: description,
+      fullName: fullName,
+      email: email,
+      phone: phone,
+      education: education,
+      summary: summary,
     );
 
     await dbHelper.insertResume(newResume);
     resumes.add(newResume);
+  }
+
+   void deleteResume(String id) async {
+    final index = resumes.indexWhere((resume) => resume.id == id);
+    if (index != -1) {
+      resumes.removeAt(index);
+      await dbHelper.deleteResume(id);
+    }
   }
 
   void reorderResumes(int oldIndex, int newIndex) {
@@ -26,6 +51,6 @@ class ResumeController extends GetxController {
     }
     final item = resumes.removeAt(oldIndex);
     resumes.insert(newIndex, item);
-    update(); // Ensure to notify the UI after reordering the list
+    update();
   }
 }
