@@ -1,26 +1,22 @@
 import '../utils/exports.dart';
 
-class HomePage extends StatelessWidget {
-  final ResumeController resumeController = Get.find();
-
-  HomePage({super.key});
+class HomePage extends GetView<ResumeController> {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    resumeController.init();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Resumes'),
         automaticallyImplyLeading: false,
       ),
       body: Obx(() {
-        if (resumeController.resumes.isEmpty) {
+        if (controller.resumes.isEmpty) {
           return const Center(child: Text('Create your new resume'));
         } else {
           return ReorderableListView(
             children: [
-              for (final entry in resumeController.resumes.asMap().entries)
+              for (final entry in controller.resumes.asMap().entries)
                 GestureDetector(
                   key: ValueKey(entry.value.id),
                   onTap: () {
@@ -72,13 +68,18 @@ class HomePage extends StatelessWidget {
                 )
             ],
             onReorder: (oldIndex, newIndex) {
-              resumeController.reorderResumes(oldIndex, newIndex);
+              controller.reorderResumes(oldIndex, newIndex);
             },
           );
         }
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          controller.fullNameController.text = '';
+          controller.emailController.text = '';
+          controller.phoneController.text = '';
+          controller.educationController.text = '';
+          controller.summaryController.text = '';
           Get.toNamed(AppPages.resumeCreatePage);
         },
         child: const Icon(Icons.add),
@@ -106,7 +107,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(color: AppColor.deleteButtonColor),
               ),
               onPressed: () {
-                resumeController.deleteResume(id);
+                controller.deleteResume(id);
                 Navigator.of(context).pop();
               },
             ),

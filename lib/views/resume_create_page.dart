@@ -1,9 +1,7 @@
 import '../utils/exports.dart';
 
-class ResumeCreatePage extends StatelessWidget {
-  final ResumeController resumeController = Get.find();
-
-  ResumeCreatePage({Key? key}) : super(key: key);
+class ResumeCreatePage extends GetView<ResumeController> {
+  const ResumeCreatePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,55 +15,61 @@ class ResumeCreatePage extends StatelessWidget {
             Icons.arrow_back_ios,
           ),
           onPressed: () {
-            resumeController.fullNameController.text = '';
-            resumeController.emailController.text = '';
-            resumeController.phoneController.text = '';
-            resumeController.educationController.text = '';
-            resumeController.summaryController.text = '';
+            controller.fullNameController.text = '';
+            controller.emailController.text = '';
+            controller.phoneController.text = '';
+            controller.educationController.text = '';
+            controller.summaryController.text = '';
             Get.back();
           },
         ),
       ),
       body: Obx(() {
-        // ignore: unused_local_variable
-        var a = resumeController.resumes.first;
-        resumeController.init();
+        if (controller.resumes.isNotEmpty) {
+          // ignore: unused_local_variable
+          var a = controller.resumes.first;
+          controller.onInit();
+        }
         return Form(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  _buildRoundedTextField(
-                    resumeController.fullNameController,
-                    'Full Name (Two words, max 16 characters)',
-                  ).p(10),
-                  _buildRoundedTextField(
-                    resumeController.emailController,
-                    'Email (Valid email)',
-                  ).p(10),
-                  _buildRoundedTextField(
-                    resumeController.phoneController,
-                    'Phone (Numeric only)',
-                  ).p(10),
-                  _buildRoundedTextField(
-                    resumeController.educationController,
-                    'Education',
-                  ).p(10),
-                  _buildRoundedTextField(
-                    resumeController.summaryController,
-                    'Summary',
-                    maxLines: 4,
-                  ).p(10),
-                ],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildRoundedTextField(
+                        controller.fullNameController,
+                        'Full Name (Two words, max 16 characters)',
+                      ).p(10),
+                      _buildRoundedTextField(
+                        controller.emailController,
+                        'Email (Valid email)',
+                      ).p(10),
+                      _buildRoundedTextField(
+                        controller.phoneController,
+                        'Phone (Numeric only)',
+                      ).p(10),
+                      _buildRoundedTextField(
+                        controller.educationController,
+                        'Education',
+                      ).p(10),
+                      _buildRoundedTextField(
+                        controller.summaryController,
+                        'Summary',
+                        maxLines: 4,
+                      ).p(10),
+                    ],
+                  ),
+                ),
               ),
               _buildRoundedButton('Save', () {
-                String fullName = resumeController.fullNameController.text;
-                String email = resumeController.emailController.text;
-                String phone = resumeController.phoneController.text;
-                String education = resumeController.educationController.text;
-                String summary = resumeController.summaryController.text;
+                String fullName = controller.fullNameController.text;
+                String email = controller.emailController.text;
+                String phone = controller.phoneController.text;
+                String education = controller.educationController.text;
+                String summary = controller.summaryController.text;
 
                 RegExp nameRegex = RegExp(r'^[A-Za-z]{1,16}\s[A-Za-z]{1,16}$');
                 RegExp emailRegex = RegExp(
@@ -80,13 +84,13 @@ class ResumeCreatePage extends StatelessWidget {
                     phone.isNotEmpty &&
                     education.isNotEmpty &&
                     summary.isNotEmpty) {
-                  int existingIndex = resumeController.resumes
+                  int existingIndex = controller.resumes
                       .indexWhere((r) => r.fullName == fullName);
 
                   if (existingIndex != -1) {
-                    // Update the existing resume in the ResumeController and Database
-                    resumeController.updateResume(Resume(
-                      id: resumeController.resumes[existingIndex].id,
+                    // Update the existing resume in the controller and Database
+                    controller.updateResume(Resume(
+                      id: controller.resumes[existingIndex].id,
                       fullName: fullName,
                       email: email,
                       phone: phone,
@@ -95,7 +99,7 @@ class ResumeCreatePage extends StatelessWidget {
                     ));
                   } else {
                     // Create a new resume
-                    resumeController.addResume(
+                    controller.addResume(
                       fullName: fullName,
                       email: email,
                       phone: phone,
@@ -103,11 +107,11 @@ class ResumeCreatePage extends StatelessWidget {
                       summary: summary,
                     );
 
-                    resumeController.fullNameController.text = '';
-                    resumeController.emailController.text = '';
-                    resumeController.phoneController.text = '';
-                    resumeController.educationController.text = '';
-                    resumeController.summaryController.text = '';
+                    controller.fullNameController.text = '';
+                    controller.emailController.text = '';
+                    controller.phoneController.text = '';
+                    controller.educationController.text = '';
+                    controller.summaryController.text = '';
                   }
                   Get.toNamed(AppPages.homepage);
                 } else {

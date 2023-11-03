@@ -76,7 +76,7 @@ class DatabaseHelper {
 
     return List.generate(maps.length, (i) {
       return Resume(
-        id: maps[i]['id'].toString(), // Assuming 'id' is retrieved as a string
+        id: maps[i]['id'].toString(), 
         fullName: maps[i]['fullName'],
         email: maps[i]['email'],
         phone: maps[i]['phone'],

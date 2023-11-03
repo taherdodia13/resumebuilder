@@ -10,24 +10,19 @@ class AppPages {
 
   static List<GetPage<dynamic>> get routes {
     return [
-      // GetPage(
-      // name: AppPages.mainpage,
-      // page: () => const MainPage(),
-      // binding: BindingsBuilder.put(() => MainPageController()),
-      // ),
       GetPage(
         name: AppPages.homepage,
-        page: () => HomePage(),
-        // binding: BindingsBuilder.put(() => HomePageController()),
+        page: () => const HomePage(),
+        binding: BindingsBuilder.put(() => ResumeController()),
       ),
       GetPage(
         name: AppPages.resumeCreatePage,
-        page: () => ResumeCreatePage(),
+        page: () => const ResumeCreatePage(),
         binding: BindingsBuilder.put(() => ResumeController()),
       ),
       GetPage(
         name: AppPages.resumeDetailPage,
-        page: () => ResumeDetailPage(),
+        page: () => const ResumeDetailPage(),
         binding: BindingsBuilder.put(() => ResumeController()),
       ),
     ];

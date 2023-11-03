@@ -1,9 +1,7 @@
 import '../utils/exports.dart';
 
-class ResumeDetailPage extends StatelessWidget {
-  final ResumeController resumeController = Get.find();
-
-  ResumeDetailPage({Key? key}) : super(key: key);
+class ResumeDetailPage extends GetView<ResumeController> {
+  const ResumeDetailPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +26,11 @@ class ResumeDetailPage extends StatelessWidget {
             Icons.arrow_back_ios,
           ),
           onPressed: () {
-            resumeController.fullNameController.text = '';
-            resumeController.emailController.text = '';
-            resumeController.phoneController.text = '';
-            resumeController.educationController.text = '';
-            resumeController.summaryController.text = '';
+            controller.fullNameController.text = '';
+            controller.emailController.text = '';
+            controller.phoneController.text = '';
+            controller.educationController.text = '';
+            controller.summaryController.text = '';
             Get.back();
           },
         ),
@@ -50,66 +48,68 @@ class ResumeDetailPage extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
-        color: Colors.white, // White background
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.pink, // Header color
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  resume.fullName,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+        color: Colors.white, 
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.pink, // Header color
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    resume.fullName,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Email'),
-                    Text(resume.email),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Phone'),
-                    Text(resume.phone),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Education',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Email'),
+                      Text(resume.email),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Phone'),
+                      Text(resume.phone),
+                    ],
+                  ),
+                ],
               ),
-            ),
-            Text(resume.education),
-            const SizedBox(height: 20),
-            const Text(
-              'Summary',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 20),
+              const Text(
+                'Education',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(resume.summary),
-          ],
+              Text(resume.education),
+              const SizedBox(height: 20),
+              const Text(
+                'Summary',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(resume.summary),
+            ],
+          ),
         ),
       ),
     );

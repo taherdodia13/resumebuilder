@@ -27,5 +27,5 @@ class MyApp extends StatelessWidget {
 }
 
 void dependencies() {
-  Get.lazyPut(() => ResumeController(), fenix: true);
+  Get.put(() => ResumeController(), permanent: true);
 }

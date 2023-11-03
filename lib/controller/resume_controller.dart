@@ -10,7 +10,8 @@ class ResumeController extends GetxController {
   final TextEditingController educationController = TextEditingController();
   final TextEditingController summaryController = TextEditingController();
 
-  Future<void> init() async {
+  @override
+  void onInit() async {
     resumes.assignAll(await dbHelper.getResumes());
     Resume? resume = Get.arguments as Resume?;
 
@@ -21,6 +22,27 @@ class ResumeController extends GetxController {
       educationController.text = resume.education;
       summaryController.text = resume.summary;
     }
+    super.onInit();
+  }
+
+  @override
+  void dispose() {
+    fullNameController.text = '';
+    emailController.text = '';
+    phoneController.text = '';
+    educationController.text = '';
+    summaryController.text = '';
+    super.dispose();
+  }
+
+  @override
+  void onClose() {
+    fullNameController.text = '';
+    emailController.text = '';
+    phoneController.text = '';
+    educationController.text = '';
+    summaryController.text = '';
+    super.onClose();
   }
 
   void updateResume(Resume updatedResume) async {

@@ -4,7 +4,6 @@ export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:get/get.dart';
 //Controllers
 export 'package:resume_builder/controller/resume_controller.dart';
-export 'package:resume_builder/controller/user_controller.dart';
 //Models
 export 'package:resume_builder/model/resume_model.dart';
 //Helpers
